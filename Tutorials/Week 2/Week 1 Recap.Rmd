@@ -1,0 +1,318 @@
+---
+title: 'Week 1: Recap'
+author: "Hong Xiang Yue"
+date: "07/03/2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+#Lecture Refresher
+
+## Predictive vs Prescriptive Analytics
+
+###Predictive analytics
+- Uses variables to predict outcome
+- Only cares about $\textit{correlation}$ 
+- Isn't interested in changing outcome, but predicting what the outcome will be, so strategies can be used to exploit it
+- e.g. I want to predict tomorrow's stock price so that I know whether to buy or sell shares. I'm not interested in what actually caused the stock price change.
+
+###Prescriptive analytics
+- Looks at underlying causal relationship between $x$ and $y$
+- Not just correlation, but $\textit{causality}$
+- Making a $\textit{prescription}$ on how to change outcome, very useful in economic policy 
+- e.g. Does forcing people to stay in school for longer increase their wage?
+
+
+##Types of data
+- At a disadvantage when compared to most sciences, don't usually have access to experimental data, only observational
+- Very difficult to draw conclusions about causality, need to be very careful
+- Cross-sectional: variablesmultiple indivdiuals/firms/countires at a single point in time
+- Time-series: observe variables for one entity across time
+- Panel: cross-sectional data, but obvserved across time
+- Cross-sectional vs time-series: unordered vs ordered, independent vs dependent
+
+##Modelling
+- Where theories from economics and finance can be quantified using data
+- Regression models will be used heavily in this unit
+
+#Tutorial refresher
+
+##EViews
+- Viewing variables
+- Histograms and descriptive statistics 
+- Correlations and scatter plots
+- Linear regression and prediction
+- How to save output into Word
+
+##Matrix algebra
+- How matrices can be used to simplify our regression equations
+- Rows vs columns of a matrix
+- Transpose operator
+$$
+\begin{bmatrix}
+1 & 2\\
+3 & 4\\
+5 & 6\\
+\end{bmatrix}'
+=
+\begin{bmatrix}
+1 & 3 & 5\\
+2 & 4 & 6
+\end{bmatrix}
+$$
+- How to multiply matrices
+
+#Week 2 Tutorial: Part A
+
+##Vlookup
+- Formula to search a table for a piece of information 
+- First specify the lookup value, this will be usually some sort of code which identifies a particular individual, country, product, stock etc.
+- Then select the table in which you wish to conduct the lookup, the item code should always be the first column of the table
+- Next, select the variable you are interested in, this is given by the column number of the table
+- Last argument, set as FALSE for our purposes
+
+#Week 2 Tutorial: Part B
+
+##Question 1
+
+###1. 
+- Open up your Part A excel file in EViews
+- Obtain summary statistics and histogram of GDPPC, in groups of 4 discuss what you notice
+- If a different set of countries were sampled would the summary statistics be the same? 
+- https://flux.qa/LDPPHD
+
+
+##Question 1
+###2. 
+- Create scatterplot between co2pc and gdppc
+- What sort of relationship is there?
+- Use a log transformation on gdppc and draw a new scatterplot, what do you see?
+
+##Question 2
+- Visit www.ausmacrodata.org and download the wage price index csv
+- Keep first two columns and delete everything else, open up in Eviews
+
+###1. 
+- Plot as line graph
+- What do we learn from the plot?
+
+###2. 
+- Given this data set, what do you think is the best way to predict next quarter's wage price index?
+- https://flux.qa/LDPPHD
+
+
+##Question 2
+
+###3.
+- Very difficult to see other features of the time series because the trend is very strong
+- Can look at growth rates instead
+- Today's growth rate is 
+$$g_t = 100 \times \frac{wpi_t-wpi_{t-1}}{wpi_{t-1}}$$
+- e.g. Share price yesterday is 50, today it is 52, the growth rate (as a percentage) is 
+$$100\times\frac{52-50}{50}=4\%$$
+- Known as the simple return
+
+##Question 2
+###3. continued
+
+- Can also calculate log return 
+$$g_t =100 \times\Delta \log(wpi_t) =  100\times(\log(wpi_t)-\log(wpi_{t-1}))$$
+- Using the same example, the log return is 
+$$100\times(\log(52)-\log(50))=3.922071\%$$
+
+- In EViews type wpi_log_returns = dlog(wage) to create a series of log returns on the wage price index
+- Open up the new series, why is the first value NA?
+
+##Question 2
+###4. 
+- Plot the series as a line graph and hover your mouse over the peaks
+- What do you notice?
+
+###5.
+- Now instead of selecting "line and symbol" select the specific option as "seasonal plot"
+- There are two further options in the seasonal type box, "Paneled lines & means" and "Multiple overlayed lines", try both
+- Comparing the two plots, what do you see?
+
+##Question 2
+###6. Discussion
+- Is this bad?
+- What other information do we need?
+
+#Part C: How to use MoVE
+
+##The basics
+- Install Citrix receiver
+- Login to MoVE
+- Open and edit files in EViews
+- Import files locally
+
+#Part D: More matrix algebra
+
+##Inverse of a matrix
+- Note, we can only multiply matrices together, not divide them
+- Instead, what we do is multiply by its inverse
+- The inverse is only defined for square matrices
+
+$$\textbf{A}^{-1}\textbf{A}=\textbf{I}$$
+An example, solving for the matrix $\textbf{A}$
+
+$$\textbf{BA}=\textbf{C}$$
+$$\textbf{B}^{-1}\textbf{BA}=\textbf{B}^{-1}\textbf{C}$$
+$$\textbf{I}\textbf{A}=\textbf{B}^{-1}\textbf{C}$$
+$$\textbf{A}=\textbf{B}^{-1}\textbf{C}$$
+
+##Drawing vectors
+```{r}
+par(pty="s")
+
+x = c(0,2,-1)
+y = c(0,1,2)
+      
+vdata = data.frame(x,y)
+
+x = as.list(x)
+y = as.list(y)
+
+for (i in 1:3){
+  x[i] <- toString(x[i])
+  y[i] <- toString(y[i])
+}
+
+
+rownames(vdata) = c(paste("(",x[1], ",", y[1], ")"),
+                    paste("(",x[2], ",", y[2], ")"),
+                    paste("(",x[3], ",", y[3], ")"))
+                    
+
+
+plot(y~x, 
+     ylim = c(-1,3),
+     xlim = c(-2,3),
+     main = "", xlab = "x", ylab = "y",
+     data = vdata)
+
+with(vdata, text(y~x, labels = rownames(vdata), pos = 4))
+
+
+arrows(0,0,vdata$x[2],vdata$y[2], lwd=2)
+arrows(0,0,vdata$x[3],vdata$y[3], lwd=2)
+```
+
+##Orthogonality 
+- Two vectors are orthogonal, if they are perpendicular
+- Difficult to visualise in more than three dimensions, but can be verified mathematically 
+- Given two column vectors $\textbf{u}$ and $\textbf{v}$, if $\textbf{u}'\textbf{v} = 0$, then the vectors are orthogonal
+
+###Example
+$$
+\textbf{u} =
+\begin{bmatrix}
+-1\\
+2\\
+\end{bmatrix}
+,
+\textbf{v} =
+\begin{bmatrix}
+2\\
+1\\
+\end{bmatrix}
+$$
+$$\textbf{u}'\textbf{v} = -1\times2 + 2\times 1 = 0$$
+
+##Linear combinations of vectors
+Vectors of the same dimension can also be combined to create another vector of the same dimension, by adding and subtracting multiples of given vectors e.g.
+
+$$
+\begin{bmatrix}
+-1\\
+4\\
+3
+\end{bmatrix}
+=
+2\times
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
+-3
+\times
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix}
+$$
+More generally, 
+
+$$\textbf{v} = \sum_{j=1}^k a_j \textbf{u}_j$$
+Where the $a_j$ are scalar constants and the $\textbf{u}_j$ are vectors of the same dimension.
+
+##Exercises
+
+###Question 1.
+$\newline$
+Given 
+
+$$
+\textbf{A}
+=
+\begin{bmatrix}
+-4 & 0\\
+0 & 9\\
+3 & 0 
+\end{bmatrix}, 
+\textbf{v}
+=
+\begin{bmatrix}
+3 \\
+0 \\
+4
+\end{bmatrix}
+$$
+Show that each of the columns of $\textbf{A}$ are orthogonal to $\textbf{v}$
+
+##Exercises
+
+###Question 2.
+$\newline$
+Substitute
+$$\hat{\textbf{u}}=\textbf{y}-\textbf{X}\hat{\boldsymbol{\beta}}$$
+into 
+
+$$\textbf{X}'\hat{\textbf{u}}=\textbf{0}$$
+
+and solve for $\hat{\boldsymbol{\beta}}$.
+
+##Exercises
+
+###Question 3.
+Given 
+
+$$
+\textbf{v}=
+\begin{bmatrix}
+2\\
+1\\
+-10
+\end{bmatrix},
+\textbf{u}_1=
+\begin{bmatrix}
+2\\
+0\\
+-3
+\end{bmatrix},
+\textbf{u}_2=
+\begin{bmatrix}
+2\\
+-1\\
+4
+\end{bmatrix}
+$$
+Show that $\textbf{v}$ is a linear combination of $\textbf{u}_1$ and $\textbf{u}_2$ i.e. solve for $a_1$ and $a_2$ so that 
+
+$$\textbf{v} =  a_1\textbf{u}_1+a_2\textbf{u}_2$$
+
+is true.

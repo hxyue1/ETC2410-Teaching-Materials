@@ -1,0 +1,321 @@
+---
+title: "Tutorial Week 3"
+author: "Hong Xiang Yue"
+date: "14/03/2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+#Tutorial 3: Part B
+
+##Question 1
+The covariance between two random variables $X$ and $Y$ is defined as
+
+$$Cov(X,Y) = E[(X-\mu_X)(Y-\mu_Y)]$$
+
+Show that it can also be written as
+
+$$Cov(X,Y) = E[(X-\mu_X)Y]=E[(Y-\mu_Y)X]$$
+
+Hint: expand out one of the brackets and using the following rules to help you
+
+1. $E[X]=\mu_X$
+2. $E[X-b]=E[X]-E[b]=E[X]-b$
+3. $E[aX]=aE[X]$
+
+##Question 1 Continued
+Starting from
+
+$$Cov(X,Y) = E[(X-\mu_X)Y]$$
+
+show that 
+
+$$Cov(X,Y)=E[XY]-\mu_X\mu_Y$$
+
+Hint: it's very similar to the first part!
+
+##But what is a covariance?
+- Expectation and variance as concepts are somewhat intuitive 
+- Measures how two random variables move together or co-vary
+- For a positive covariance between two variables, if one variable is above its mean, then the other variable is more likely to be above its mean
+- Magnitude is difficult to interpret because it changes depending on your units, hence correlation a unitless measure is easier to interpret
+
+##Question 2
+Consider a random variable $X$ with mean $E[X]=\mu_X$ and variance $Var(X)=\sigma_X^2$.
+
+And further consider a sequence of mutually $\textit{independent}$ random variables $X_1,X_2,X_3,X_4$ each with the same mean and variance as $X$.
+
+Compute:
+
+1. $E[4X]$
+2. $E[X_1 + X_2 + X_3 + X_4]$
+3. $Var(4X)$
+4. $Var(X_1 + X_2 + X_3 + X_4)$
+
+Hint: use the following rules to help you
+
+1. $Var(aX)=a^2Var(X)$
+2. $Var(X+Y)=Var(X)+Var(Y)$, if $X$ and $Y$ are independent
+
+##Why is this relevant?
+- Think of $X$ as a payoff from an asset or a bet, (in this case a 25c bet on a pokie machine). $E[X]$ and $Var(X)$ correspond to the expected return and risk of putting your money in that asset or bet.
+- We want to maximise the expected return, $E[X]$ and minimise the volatility/variance, $Var(X)$
+- Is it better to bet all your money on one event, $4X$, or to bet it multiple times, $X_1 + X_2 + X_3 + X_4$, assuming that  the outcomes of $X_1, X_2, X_3$ and $X_4$ are independent? Why?
+- https://flux.qa/LDPPHD
+
+##Diversification
+- This phenomen is known as diversification -> don't put all your eggs in one basket
+- While the expected return is the same in both cases, splitting up your money is in a sense safer
+- This is because when you split your bets up, there is a chance that a bad outcome on the first bet will be cancelled out  by a good outcome on the subsequent events
+- This is not possible if you bet all of your money in one go, the outcome will either be good or bad, but on average no different than if you had split your bets up
+- Note, diversification only works in this case because $X_1, X_2, X_3$ and $X_4$ are indepedent
+
+##Question 3
+Once again, consider a random variable $X$ with mean $E[X]=\mu_X$ and variance $Var(X)=\sigma_X^2$. Consider two options of estimating the $\textit{population}$ mean:
+
+1. Take one realisation of $X$, $x$ and use that as our estimate
+2. Take four random sampled realisations of $X$, $x_1, x_2, x_3$ and $x_4$ and calculate the sample mean, and use that as our estimate
+
+Which of these is better? https://flux.qa/LDPPHD
+
+##Question 3 Continued
+We know that it is better to maximise our sample size, but how can we mathematically show this?
+
+The two options are $X$ and $\bar{X}=\frac{1}{n}\sum^n_{i=1}X_i$
+
+1. Find their expected values
+2. Find their variances
+
+Hint: assume that since $X_1, X_2, X_3$ and $X_4$ are randomly sampled, they are independent and hence $Var(X_1 + X_2 + X_3 + X_4)=Var(X_1) + Var(X_2) + Var(X_3) + Var(X_4)$.
+
+Which of these estimators are more precise?
+
+##Multivariate Random Variables
+- A vector of random variables i.e. more than just one
+- We specify each of their individual distributions e.g. mean and variance
+- BUT, we also specify how they $\textit{co-vary together/jointly}$ e.g. covariances
+- To specify a joint/multivariate distribution we need more than just the individual means and variances, we also need each of the pair-wise covariances
+
+##Two distributions
+
+$$
+\textbf{X} = 
+\begin{bmatrix}
+X_1 \\
+X_2
+\end{bmatrix},
+\begin{bmatrix}
+E[X_1] = \mu_1 \\
+E[X_2] = \mu_2
+\end{bmatrix},
+\begin{bmatrix}
+Var[X_1] = \sigma_1^2 \\
+Var[X_2] = \sigma_2^2
+\end{bmatrix}
+$$
+
+##A bivariate distribution
+$$
+\textbf{X} = 
+\begin{bmatrix}
+X_1 \\
+X_2
+\end{bmatrix},
+E[\textbf{X}]=
+\begin{bmatrix}
+\mu_1 \\
+\mu_2
+\end{bmatrix},
+Var[\textbf{X}]
+=
+\begin{bmatrix}
+\sigma_1^2 & \sigma_{12} \\
+\sigma_{21} & \sigma_2 ^2 
+\end{bmatrix}
+$$
+To properly specify a multivariate distribution, we need not only the individual variances but the pairwise covariances as well.
+
+##Variance-covariance matrix
+If we have a vector of random variables, the expected value generalises to a vector of expectations but the variance generalises to a variance-covariance $\textit{matrix}$ e.g. For a vector $\textbf{Y}$ of $n$ random variables $Y_1, Y_2 ,.., Y_n$ the variance-covariance matrix is
+
+$$
+Var(\textbf{Y}) 
+= 
+\begin{bmatrix}
+\sigma_1^2 & \sigma_{12} & \dots & \sigma_{1n} \\
+\sigma_{21} & \sigma_2^2 & \dots & \sigma_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+\sigma_{n1} & \sigma_{n2} & \dots & \sigma^2_n
+\end{bmatrix}
+$$
+
+- $n \times n$ matrix
+- Diagonal consists of all the individual variances
+- Each of the pairwise covariances fill the upper and lower triangle
+- It is a symmetric matrix because the covariance is a symmetric operator meaning $\sigma_{ij} = \sigma_{ji}$ e.g. $\sigma_{12} = \sigma_{21}$ 
+
+##Question 4
+Our portfolio return is given by 
+
+$$X = 0.2 \times Q + 0.3\times T + 0.5 \times W$$
+
+Which we can write as $\textbf{p}'\textbf{z}$ where 
+
+$$
+\textbf{p} =
+\begin{bmatrix}
+0.2 \\
+0.3 \\
+0.5
+\end{bmatrix}, 
+\textbf{z} =
+\begin{bmatrix}
+Q \\
+T \\
+W
+\end{bmatrix}
+$$
+
+##Question 4 continued
+The expected returns of each asset are
+
+$$
+E[\textbf{z}]
+=
+\begin{bmatrix}
+1\\
+0.6\\
+0.8
+\end{bmatrix}
+$$
+
+The variance-covariance matrix of $\textbf{z}$ is 
+
+$$
+Var(\textbf{z})
+= 
+\begin{bmatrix}
+94 & 1 & 8 \\
+1 & 20 & 5 \\
+8 & 5 & 21 
+\end{bmatrix}
+$$
+
+1. Calculate the expected return of the portfolio 
+2. Using the rule $Var(X) = Var(\textbf{p}'\textbf{z}) = \textbf{p}'Var(\textbf{z})\textbf{p}$ calculate the variance of the portfolio return, $Var(X)$
+3. Compare the expected risk and return of the portfolio with the risk and return of the assets Q, T and W
+
+##Tutorial 3: Supplementary matrix algebra
+
+![You won't be assessed on this directly but it's useful to know](/Users/HongX/Desktop/Documents/Work Related Stuff/Monash Tutoring/ETC2410/2019/Tutorials/Week 3/derivation.jpeg)
+
+##Linear dependence
+- We've shown that a linear combination of vectors can be written like this
+$$\textbf{v} = \sum_{j=1}^k a_j \textbf{u}_j$$
+- We say that the set of vectors $\textbf{v}, \textbf{u}_1, \textbf{u}_2,..,\textbf{u}_k$ are $\textit{linearly dependent}$ because one vector can be expressed as a linear combination of the other vectors in the set
+- It can also be interpreted as saying there are "redundant" vectors in the set as some of them are a function of the others
+
+##Linear independence
+- Linear independence occurs when given a set of vectors, it is not possible to express a vector as a linear combination of the remaining vectors 
+
+For example
+
+$$
+\begin{bmatrix}
+0\\
+0\\
+-3
+\end{bmatrix},
+\begin{bmatrix}
+2\\
+2\\
+0
+\end{bmatrix},
+\begin{bmatrix}
+2\\
+1\\
+0
+\end{bmatrix}
+$$
+
+- It can also be interpreted as saying that there are no "redundant" vectors in the set, each vector adds unique information
+
+##Column space of a matrix
+
+The column space of a matrix is the set of all possible linear combinations of the column vectors of a matrix.
+
+e.g. Given the two vectors
+
+$$
+\begin{bmatrix}
+1 \\
+0
+\end{bmatrix},
+\begin{bmatrix}
+0 \\
+1
+\end{bmatrix}
+$$
+We can express any vector in the two-dimensional cartesian plane as a linear combination (function) of the two vectors
+$$
+x \times 
+\begin{bmatrix}
+1 \\
+0
+\end{bmatrix} 
++ y \times  
+\begin{bmatrix}
+0 \\
+1
+\end{bmatrix}
+= 
+\begin{bmatrix}
+x \\
+y
+\end{bmatrix}
+$$
+
+Then the column space of the matrix 
+
+$$
+\begin{bmatrix}
+1 & 0 \\
+0 & 1
+\end{bmatrix}
+$$
+is the entirety of the two-dimensional cartesian plane.
+
+##The relevancy of linear dependence
+- We can only do this because we had two linearly $\textit{independent}$ vectors
+- If we had linearly $\textit{dependent}$ vectors instead, we would only be able to reach a one-dimensional subset of the cartesian plane
+- The extra vector would be "redundant" and we would be just as well off with a single vector
+
+Example
+$$
+A = 
+\begin{bmatrix}
+1 & 2 \\
+2 & 4
+\end{bmatrix}
+$$
+If we wanted to combine them to reach a vector such as 
+
+$$
+\begin{bmatrix}
+1 \\
+1
+\end{bmatrix}
+$$
+
+it would be impossible to do so.
+
+##In three dimensions
+This generalises to three dimensions as well
+
+- If we only have two linearly independent vectors, we would only be able to reach a 2D subset of the full 3D space
+- Even if we had extra vectors but they were linearly dependent on the first two, we still would not be able to reach the full 3D space
+- Adding a third LI (linearly independent) vector would allow us to reach that third dimension by adding "new" information
+- Can generalise to more than 3 dimensions

@@ -1,0 +1,14 @@
+---
+title: "Test"
+author: "Hong Xiang Yue"
+date: "05/04/2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, out.width = "400px"}
+knitr::include_graphics("/Users/HongX/Desktop/Documents/Work Related Stuff/Monash Tutoring/ETC2410/2019/Tutorials/Week 6/table_flip.jpg")
+```

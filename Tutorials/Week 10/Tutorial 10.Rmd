@@ -1,0 +1,109 @@
+---
+title: "Tutorial 10"
+author: "Hong Xiang Yue"
+date: "10/05/2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+#Part A
+
+##Autocorrelation vs Partial Autocorrelation
+
+Consider a time series
+
+$$y_t = \phi_0 + \phi_1y_{t-1} + u_t$$
+
+$y_t$ is directly affected by $y_{t-1}$, the effect is measured by $\phi_1$. However, $y_t$ is indirectly affected by $y_{t-2}$ and we can see that if we lag both sides of the equation.
+
+$$y_{t-1} = \phi_0 + \phi_1y_{t-2} + u_{t-1}$$
+
+##Autocorrelation vs Partial Autocorrelation
+
+The partial autocorrelation at lag 1 will measure the direct effect of $y_{t-1}$ on $y_t$.
+
+- We are keeping $y_{t-2}$ constant and not allowing for flow on effects, like a partial derivative
+
+The autocorrelation at lag 1 will include the indirect effect that $y_{t-2}$ has on $y_t$ through $y_{t-1}$
+
+- We are not keeping $y_{t-2}$ constant but allowing for flow on effects
+
+
+#Part B
+
+##Question 1a
+
+Download the SeattleElectric2005-6.xlsx file from Moodle and open it up in EViews
+
+1. Create a dummy variable for Saturday and a variable for Sunday
+2. Use these to create a dummy variable for the weekend
+
+##Question 1b
+
+We're trying to predict aveload, the average electricity load on a particular day based on a few variables. Conduct some exploratory data analysis to determine what factors could be relevant in predicting average electricity usage. Feel free to use whatever software (e.g. Excel, R, Stata, Python, SAS, SPSS etc.) and techniques you feel comfortable with (e.g. Scatterplots, Bar charts, Pivot Tables)
+
+##Question 1c: Consequences of Serial Correlation
+
+Estimate a regression of aveload on a constant, avetemp, wknd and pubhol.
+
+Part of the electricity load that remains unexplained by the model could potentially be correlated over time. What consequences would this have for the OLS estimator?
+
+https://flux.qa/LDPPHD
+
+##Question 1d: Identifying Serial Correlation
+
+We think that the errors may follow an autoregressive process of order 7 (AR(7)). Let's check the correlogram of the residuals first. Next we'll conduct a Breusch-Godfrey test of the errors.
+
+Our model is 
+
+$$aveload_i = \beta_0 + \beta_1avetemp_i + \beta_2wknd_i +\beta_3pubhol_i+u_t$$
+If the erorrs are AR(7), then:
+$$u_t = \rho_1u_{t-1}+\rho_2u_{t-2}+...+\rho_7u_{t-7}+e_t$$
+And $e_t$ are "true errors", they are i.i.d. (independently and identically distributed) with mean 0 and variance $\sigma^2$
+
+##Question 1d: Breusch-Godfrey Test
+
+The hypotheses are 
+
+$H_0: \rho_1=\rho_2=...=\rho_7=0$
+
+$H1:$ At least one of the above is not zero
+
+1. Estimate our main model via OLS
+2. Obtain the residuals $\hat{u}_t, t=1,2,...,n$
+3. Run an auxiliary (supporting) regression of the residuals on the explanatory vaiables and the lags of the residauls
+4. The test satistic is $n\times R^2_{\hat{u}}$, what is its distribution under the null hypothesis?
+
+https://flux.qa/LDPPHD
+
+##Question 1d,e: Identifying lag order of the errors
+
+Now we want to include past residuals as explanatory variables in our estimated model. How many lags should we use? Have a look at the PACF of the correlogram and the statistical significance of the lagged residuals in our auxiliary equation.
+
+https://flux.qa/LDPPHD
+
+##Question 1e: Including residuals in our estimated model through FGLS
+
+Having decided on incorporating one lag in our residuals, we now want to estimate
+
+$$aveload = \beta_0 + \beta_1avetemp + \beta_2wknd + \beta_3pubhol + \rho_1u_{t-1}+e_t$$
+
+This can't be done by OLS because the model is no longer linear in parameters, instead we'll do this using FGLS instead.
+
+##Question 1e: Hypothesis testing
+
+With our model free of serial correlation, we now want to test if the sensitivity of electricity load to temperature is different for weekends vs weekdays. Let's estimate:
+
+$$aveload = \beta_0 + \beta_1avetemp + \beta_2wknd + \beta_3pubhol$$ 
+$$ + \delta_1wknd*avetemp + \rho_1u_{t-1}+e_t$$
+
+And test $H_0:\delta_1=0$ vs $H_1:\delta_1\neq 0$ 
+
+##Question 1f: Hypothesis testing
+
+Using the regression model with AR errors, test whether or not having separate dummies for Sat and Sun would improve the model.
+
+

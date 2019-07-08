@@ -1,0 +1,184 @@
+---
+title: "Tutorial 11"
+author: "Hong Xiang Yue"
+date: "17/05/2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+#Part A
+
+##Question 1
+
+- Seasonality is usually defined as patterns which occur within a year
+- With yearly data, seasonality by this definition is not observable 
+- If you use a broader definition to include cycles which occur over a longer period of time, then seasonality could exist wit yearly data
+
+##Question 2
+
+###Covariance stationary process
+
+1. $E(y_t) = \mu_y$
+2. $Var(y_t)=\sigma^2_y$
+3. $Cov(y_t,y_{t+j})=\gamma_j$
+
+Correlogram will decay exponentially for each lag
+
+##Question 2
+
+###White noise process
+
+1. $E(y_t) = 0$
+2. $Var(y_t)=\sigma^2_y$
+3. $Cov(y_t,y_{t+j})=0$
+
+ACF should be close to zero at all lags
+
+##Question 2
+
+###Mean reverting process
+
+Another name for a covariance stationary process
+
+- If $y_t$ is above $\mu_y$, it will over time revert back to $\mu_y$
+- Effect of a large 'shock' on $y_t$ will decay exponentially
+
+##Question 2
+
+###Trend stationary process
+
+Stationary process with added trend
+
+- Full process is non-stationary
+- When trend is removed, process is stationary
+
+e.g. 
+
+$$y_t = \phi_0+\delta t+\phi_1y_{t-1}+u_t$$
+
+- Is non-stationary
+- Correlogram will be very persistent
+
+##Question 2
+
+###Trend stationary process
+
+$$y_t-\delta t = \phi_0+\phi_1y_{t-1}+u_t$$
+
+- If this detrended process is stationary, we call it trend stationary
+- Correlogram will decay exponentially
+
+##Question 2
+
+###Random Walk
+
+$$y_t=y_{t-1}+u_t$$
+
+- Non-stationary
+- Correlogram will start at 1 and decay very slowly (if at all)
+- Finance theories sometimes assume that stock prices follow a modified form of a Random Walk. e.g. Black-Scholes Option Pricing Formula, Efficient Markets Hypothesis
+
+#Part B
+
+##Question 1a: Models with lagged dependent variables and serialy correlated errors
+
+Let
+
+$$y_t = c +\phi_1y_{t-1}+u_t, \quad|\phi_1|<1$$
+$$u_t=\rho u_{t-1}+e_t,\quad |\rho|<1$$
+$$e_t\sim i.i.d.(0,\sigma^2)$$
+Show that
+
+$$y_t = \alpha_0 +\alpha_1 y_{t-1}+\alpha_2 y_{t-2}+e_t$$
+where
+
+$$\alpha_0=(1-\rho)c, \alpha_1=\phi_1+\rho, \alpha=-\rho\phi_1$$
+
+##Question 1b: What are the implications of this result?
+
+- If AR model has serial correlation, try adding more lags
+- Used to check whether model is correctly specified
+
+##Question 2
+
+Open up "US_gdp.wf1". Variables included are 
+
+- gdp: Real GDP for the US
+- ir_3m: 3-Month Treasury bill interest rates
+- ir_20y: 20-year government bond yields
+
+Reported on a quarterly basis from 1954Q1 to 2017Q2
+
+##Question 2a
+
+Generate a new series $dlgdp =400\times dlog(gdp)$
+
+- GDP is a non-stationary process
+- Growth rates however are stationary
+- Multiplied by 100 to convert to percentage point
+- Mulptlied by 4 to annualise from quarterly data
+
+##Question 2b
+
+Generate a variable to calculate the spread between interest rates on 3 month treasury bills and 20 year bonds
+
+- Is the spread white noise?
+- Is it mean reverting?
+- Is it stationary?
+
+
+##Question 2c
+
+Change the sample period to 1955Q1-2017Q2 and estimate 
+
+$$dlgdp_t=\beta_0+\beta_1dlgdp_{t-1}+\beta_2dlgdp_{t-2}+\beta_3spread_{t-1}+\beta_4spread_{t-2}+u_t$$
+- This is an ARDL(2,2) model with $y_t = dlgdp_t$ and $x_t = spread_t$
+- Test the null hypothesis that there is no serial correlation vs the alternative that there is serial correlations in the errors up to the fourth lag
+
+##Question 2d
+
+Test for the joint significance of $spread_{t-1}$ and $spread_{t-2}$.
+
+##Question 2e
+
+Drop the lag of spread that is least statistically significant and re-estimate the equation. 
+
+What is the effect of a one percentage point $\textit{decrease}$ in the spread on the GDP growth rate:
+
+- this period?
+- next period?
+- two periods later?
+- in the long run?
+
+##Question 2e
+
+Long run effect is the effect this period, plus next period, plus two periods later ad infinitum. 
+
+Formula is 
+
+$$=\frac{\textrm{sum of coefficients for } x_t}{\textrm{1-sum of coefficients for lags of } y_t}$$
+
+##Question 2f 
+
+Some economists believe that the informativeness of the interest spread has declined since the 1980s. 
+
+Create a dummy variable which is 1 before 1986Q1, and is 0 on and after 1986Q1. Test whether or not this is the case.
+
+
+##Question 2f: Clarifying some potential misunderstandings
+
+Some may be asking, couldn't we have done this another way?
+
+- Create a variable for $\textit{post}$ 1986Q1
+- Estimated a model of the form $dlgdp_t=\beta_0+\beta_1dlgdp_{t-1}+\beta_2dlgdp_{t-2}+\beta_3spread_{t-2}+\beta_4 pre86\times spread_{t-2}+u_t$
+- Like what we've done before?
+
+Problem is:
+
+- We are interested in the slope before 1986 and after 1986
+- The above method gives us an estimate of the change in the slope after 1986
+
+

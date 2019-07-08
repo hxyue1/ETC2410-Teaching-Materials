@@ -1,0 +1,191 @@
+---
+title: "Week 2 supplementary exercise soultions"
+author: "Hong Xiang Yue"
+date: "12/03/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Exercises
+
+###Question 1.
+$\newline$
+Given 
+
+$$
+\textbf{A}
+=
+\begin{bmatrix}
+-4 & 0\\
+0 & 9\\
+3 & 0 
+\end{bmatrix}, 
+\textbf{v}
+=
+\begin{bmatrix}
+3 \\
+0 \\
+4
+\end{bmatrix}
+$$
+Show that each of the columns of $\textbf{A}$ are orthogonal to $\textbf{v}$
+
+###Question 2 Solution
+
+While it may be somewhat tricky to understand what the question is asking for because of the use of jargon, the actual mathematical operations are quite simple. The two columns of $\textbf{A}$ are
+
+$$
+\begin{bmatrix}
+-4 \\
+0 \\
+3 
+\end{bmatrix}, 
+\begin{bmatrix}
+0 \\
+9 \\
+0 
+\end{bmatrix}
+$$
+and we want to show that they are orthogonal to 
+
+$$
+\textbf{v}
+=
+\begin{bmatrix}
+3 \\
+0 \\
+4
+\end{bmatrix}
+$$
+
+All you need to do is transpose $\textbf{v}$ and multiply it by each of the columns and show that the result is equal to zero. You can also transpose the columns of $\textbf{A}$ and multiply them by $\textbf{v}$, both methods are equivalent.
+
+Taking the transpose of $\textbf{v}$, 
+
+$$
+\textbf{v}'= 
+\begin{bmatrix}\
+3 & 0 & 4\\
+\end{bmatrix}
+$$
+
+and multiplying by the first column of $\textbf{A}$ 
+
+$$
+\begin{bmatrix}\
+3 & 0 & 4\\
+\end{bmatrix}
+\begin{bmatrix}
+-4 \\
+0 \\
+3 
+\end{bmatrix}
+= 3\times-4+0\times 0+4\times3
+= -12 + 12
+=0
+$$
+
+Doing the same for the second column of $\textbf{A}$
+
+$$
+\begin{bmatrix}\
+3 & 0 & 4\\
+\end{bmatrix}
+\begin{bmatrix}
+0 \\
+9 \\
+0 
+\end{bmatrix}
+= 3\times0+0\times9 + 4\times 0 
+=0
+$$
+Hence the columns of $\textbf{A}$ are orthogonal to $\textbf{A}$
+
+###Question 2.
+$\newline$
+Substitute
+$$\hat{\textbf{u}}=\textbf{y}-\textbf{X}\hat{\boldsymbol{\beta}}$$
+into 
+
+$$\textbf{X}'\hat{\textbf{u}}=\textbf{0}$$
+
+and solve for $\hat{\boldsymbol{\beta}}$.
+
+###Question 2 Solution
+
+Pay attention to the lecture in week 3!
+
+###Question 3.
+Given 
+
+$$
+\textbf{v}=
+\begin{bmatrix}
+2\\
+1\\
+-10
+\end{bmatrix},
+\textbf{u}_1=
+\begin{bmatrix}
+2\\
+0\\
+-3
+\end{bmatrix},
+\textbf{u}_2=
+\begin{bmatrix}
+2\\
+-1\\
+4
+\end{bmatrix}
+$$
+Show that $\textbf{v}$ is a linear combination of $\textbf{u}_1$ and $\textbf{u}_2$ i.e. solve for $a_1$ and $a_2$ so that 
+
+$$\textbf{v} =  a_1\textbf{u}_1+a_2\textbf{u}_2$$
+
+is true.
+
+###Question 3 solution
+There was a mistake in the question I wrote up in class, terribly sorry for that! Hopefully this makes more sense now.
+
+$$a_1 = 2, a_2 = -1$$
+
+You can verify this
+
+$$
+2 \times
+\begin{bmatrix}
+2\\
+0\\
+-3
+\end{bmatrix}
+-1\times
+\begin{bmatrix}
+2\\
+-1\\
+4
+\end{bmatrix}
+=
+\begin{bmatrix}
+2\times2-1\times2\\
+2\times0-1\times-1\\
+2\times-3-1\times4
+\end{bmatrix}
+=
+\begin{bmatrix}
+4-2\\
+0+1\\
+-6-4
+\end{bmatrix}
+=
+\begin{bmatrix}
+2\\
+1\\
+-10
+\end{bmatrix}
+=\textbf{v}
+$$
+
+

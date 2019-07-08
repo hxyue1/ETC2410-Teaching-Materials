@@ -1,0 +1,137 @@
+---
+title: "Tutorial 7"
+author: "Hong Xiang Yue"
+date: "12/04/2019"
+output: beamer_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+#Part A
+
+##Question 1: Calculating growth rates
+There are two ways to calculate a growth rate/return:
+
+1. Simple growth rate/return
+
+$$R_t = \frac{P_t -P_{t-1}}{P_{t-1}}$$
+
+2. Logarithmic growth rate/return
+
+$$r_t = \ln(\frac{P_t}{P_{t-1}})=\ln(P_t)-\ln(P_{t-1})=\Delta\ln(P_t)$$
+
+##Question 1: Annualising growth rates
+There are also two ways to annualise growth rates/returns
+
+1. Multiplying by number of periods in a year, for example
+
+$$r_{t,simple}^*=r_t\times4$$
+
+2. Compounding (geometric average) 
+
+$$r_{t,compound}^* = (1+r_t)^4-1$$
+
+##Question 2: Assumption E.1 linear in parameters
+This assumption means that the linear regression can be written in the form $\textbf{y} = \textbf{X}\boldsymbol{\beta} + \textbf{u}$. Without it holding OLS is not possible at all.
+
+- This does not rule out the use of non-linear $\textit{variables}$ e.g. $x^2, x^3, \sin(x), \ln(x)$ etc.
+- But we cannot have non-linear relationships in our $\beta$s
+
+Examples where this is violated:
+
+- $y = \beta_0 + \beta_1x_1 + \sqrt{\beta_1}x_2 + u$
+- $y = \beta_0 + \beta_1x_1 + \beta_1\beta_2x_2 + u$
+
+While an equation may appear non-linear in parameters, it can be sometimes transformed to become linear in parameters.
+
+##Question 3
+
+#Part B
+
+##Question 1a
+This tutorial will investigate the relationship between campaign expenditure and probability of winning a competitive seat for two different candidates A and B. We will call A the "candidate" and B the "opponent"
+
+- Open up the vote.wf1 workfile and estimate a regression of the form $votea = \beta_0 + \beta_1\ln(expenda) + \beta_2\ln(expendb) + \beta_3democa + u$
+- How do we interpret the coefficient  $\hat{\beta}_1$?
+- https://flux.qa/LDPPHD
+- Why is $\hat{\beta}_2$ negative?
+
+
+##Interpretation of logarithms
+
+###Log of a dependent variable
+
+- $\ln(y)=\beta_0+\beta_1x$ 
+- $100\beta_1\approx\%\Delta y$ for a one unit change in $x$
+
+For example let $\ln(y=9+0.04x$ and $x_1=2$, $x_2=3$
+
+- $\Delta x$ = $x_2-x_1$ = 1
+- Approximate percentage change in $y$ is $0.04\times100\%=4\%$ i.e. $\%\Delta y\approx4\%$
+
+##Interpretation of logarithms
+
+###Log of an independent variable
+
+- $y=\beta_0+\beta_1\ln(x)$ 
+- $\beta_1/100 \approx \Delta y$ for a one percent change in $x$
+
+For example let $y=-4+15.34\ln(x)$ and $x_1=200$, $x_2=202$
+
+- $\%\Delta x$ = $\frac{x_2-x_1}{x_1}$ = $1\%$
+- Approximate change in $y$ is $15.34/100=0.1534$ 
+
+##Question 1b
+Test the overall significance of the model using an F-test with a significance level of $\alpha = 0.01$.
+
+What is the value of the F-stat? Hint: use the formula below
+
+$$F_{stat}=\frac{R^2/k}{(1-R^2)/(n-k-1)}$$
+
+https://flux.qa/LDPPHD
+
+##F-stat formulas
+
+Two ways of calculating the F-stat.
+
+1. Using SSR, $$F=\frac{(SSR_r-SSR_{ur})/q}{SSR_{ur}/(n-k-1)}$$
+2. Using $R^2$, $$F=\frac{(R^2_{ur}-R^2_r)/q}{(1-R^2_{ur})/(n-k-1)}$$
+
+The formula for testing overall signficance in 1b is a special case of 2.
+
+- The restricted model is $y=\beta_0+u$
+- It's $R^2$ is $\textit{always}$ 0, so $R^2_r=0$ and it drops out of the formula
+- We're testing $H_0:\beta_1=\beta_2=\dots=\beta_k=0$  so the number of restrictions is $q=k$
+
+
+##Question 1c
+Test the hypothesis that controlling for campaign expenditure, being a democratic candidate is not significant in predicting the vote percentage at the 5% level. Use two methods:
+
+1. Compare the t-stat with the appropriate critical value
+2. Compare the p-value with the significance level
+
+##Question 1d
+Test the $\textit{joint}$ hypothesis that controlling for campaign expenditure, being a democratic candidate is not significant in predicting the vote percentage AND that the effect of every percentage change in expenditure by A on the vote percentage can be completely offset by the same percentage change in expenditure by B. 
+
+- What is the null hypothesis? https://flux.qa/LDPPHD
+
+##Question 1d: continued
+
+The unrestricted (full) model is $$votea = \beta_0 + \beta_1\ln(expenda) + \beta_2\ln(expendb) + \beta_3democa + u$$
+What form should the restricted model take so we can conduct an F-test?
+
+- Remember the restricted model is a special case of the full model in which $H_0: \beta_1=-\beta_2, \beta_3=0$ is true.
+
+##Question 1e
+
+Now drop democa from the model and  test the alternative hypothesis that if the opponent (B) increases their expenditure by 1%, then the candidate (A) will have to increase their expenditure by more than 1% to offset the effect on the vote share that the candidate (A) receives.
+
+- If H1 is true, when the opponent (B) increases their expenditure by 1%, then the candidate (A) will have to increase their expenditure by $\textit{more than}$  1% to maintain the current vote share
+- The opponent's (B) expenditure is more powerful than the candidate's (A) expenditure
+- The magnitude of $\beta_2$ is greater than $\beta_1$
+- But since the sign of $\beta_2$ is negative (if B increases expenditure, then A will lose vote share) we want to test the alternative that $\beta_1 + \beta_2 < 0$
+- i.e. $\beta_2$ is more negative than $\beta_1$ is positive
+
+
